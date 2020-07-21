@@ -31,8 +31,8 @@ const (
 
 	// KindKnativeEventing is the Kind of Knative Eventing in a GVK context.
 	KindKnativeEventing = "KnativeEventing"
-	// KindKnativeServing is the Kind of Knative Serving in a GVK context.
-	KindKnativeServing = "KnativeServing"
+	// KindTektonPipeline is the Kind of Knative Serving in a GVK context.
+	KindTektonPipeline = "TektonPipeline"
 )
 
 // Resource takes an unqualified resource and returns a Group qualified GroupResource
@@ -44,8 +44,8 @@ func Resource(resource string) schema.GroupResource {
 // scheme.
 func addKnownTypes(s *runtime.Scheme) error {
 	s.AddKnownTypes(SchemeGroupVersion,
-		&KnativeServing{},
-		&KnativeServingList{},
+		&TektonPipeline{},
+		&TektonPipelineList{},
 		&KnativeEventing{},
 		&KnativeEventingList{})
 	metav1.AddToGroupVersion(s, SchemeGroupVersion)
