@@ -84,26 +84,26 @@ type TektonPipelineList struct {
 }
 
 // IstioGatewayOverride override the knative-ingress-gateway and cluster-local-gateway
-type IstioGatewayOverride struct {
-	// A map of values to replace the "selector" values in the knative-ingress-gateway and cluster-local-gateway
-	Selector map[string]string `json:"selector,omitempty"`
-}
-
-// CustomCerts refers to either a ConfigMap or Secret containing valid
-// CA certificates
-type CustomCerts struct {
-	// One of ConfigMap or Secret
-	Type string `json:"type"`
-
-	// The name of the ConfigMap or Secret
-	Name string `json:"name"`
-}
-
-// HighAvailability specifies options for deploying Knative Serving control
-// plane in a highly available manner. Note that HighAvailability is still in
-// progress and does not currently provide a completely HA control plane.
-type HighAvailability struct {
-	// Replicas is the number of replicas that HA parts of the control plane
-	// will be scaled to.
-	Replicas int32 `json:"replicas"`
-}
+//type IstioGatewayOverride struct {
+//	// A map of values to replace the "selector" values in the knative-ingress-gateway and cluster-local-gateway
+//	Selector map[string]string `json:"selector,omitempty"`
+//}
+//
+//// CustomCerts refers to either a ConfigMap or Secret containing valid
+//// CA certificates
+//type CustomCerts struct {
+//	// One of ConfigMap or Secret
+//	Type string `json:"type"`
+//
+//	// The name of the ConfigMap or Secret
+//	Name string `json:"name"`
+//}
+//
+//// HighAvailability specifies options for deploying Knative Serving control
+//// plane in a highly available manner. Note that HighAvailability is still in
+//// progress and does not currently provide a completely HA control plane.
+//type HighAvailability struct {
+//	// Replicas is the number of replicas that HA parts of the control plane
+//	// will be scaled to.
+//	Replicas int32 `json:"replicas"`
+//}

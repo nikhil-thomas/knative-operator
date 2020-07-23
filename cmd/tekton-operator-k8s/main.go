@@ -16,14 +16,14 @@ limitations under the License.
 package main
 
 import (
-	"knative.dev/operator/pkg/reconciler/knativeeventing"
-	"knative.dev/operator/pkg/reconciler/knativeserving"
+	"knative.dev/operator/pkg/reconciler/tektonpipeline"
 	"knative.dev/pkg/injection/sharedmain"
 )
 
 func main() {
 	sharedmain.Main("tektoncd-operator",
-		knativeserving.NewController,
-		knativeeventing.NewController,
+		//knativeserving.NewController,
+		//knativeeventing.NewController,
+		tektonpipeline.NewController,
 	)
 }

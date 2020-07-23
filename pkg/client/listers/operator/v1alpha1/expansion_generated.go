@@ -33,3 +33,11 @@ type KnativeServingListerExpansion interface{}
 // KnativeServingNamespaceListerExpansion allows custom methods to be added to
 // KnativeServingNamespaceLister.
 type KnativeServingNamespaceListerExpansion interface{}
+
+// TektonPipelineListerExpansion allows custom methods to be added to
+// TektonPipelineLister.
+type TektonPipelineListerExpansion interface{}
+
+// TektonPipelineNamespaceListerExpansion allows custom methods to be added to
+// TektonPipelineNamespaceLister.
+type TektonPipelineNamespaceListerExpansion interface{}

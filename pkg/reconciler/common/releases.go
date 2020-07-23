@@ -17,11 +17,14 @@ limitations under the License.
 package common
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
+	"knative.dev/pkg/logging"
 	"os"
 	"path"
 	"path/filepath"
+
 	"sort"
 
 	mf "github.com/manifestival/manifestival"
@@ -75,10 +78,15 @@ func fetch(path string) (mf.Manifest, error) {
 }
 
 func componentDir(instance v1alpha1.KComponent) string {
+	logger := logging.FromContext(context.TODO())
 	koDataDir := os.Getenv(KoEnvKey)
 	switch instance.(type) {
-	case *v1alpha1.KnativeServing:
-		return filepath.Join(koDataDir, "knative-serving")
+	//case *v1alpha1.KnativeServing:
+	//	return filepath.Join(koDataDir, "knative-serving")
+	case *v1alpha1.TektonPipeline:
+		logger.Info("koDataDir ", koDataDir)
+		logger.Info("path: ", filepath.Join(koDataDir, "tekton-pipelines"))
+		return filepath.Join(koDataDir, "tekton-pipelines")
 	case *v1alpha1.KnativeEventing:
 		return filepath.Join(koDataDir, "knative-eventing")
 	}

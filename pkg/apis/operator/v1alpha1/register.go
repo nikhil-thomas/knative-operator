@@ -24,7 +24,7 @@ import (
 
 const (
 	// GroupName is the group of the API.
-	GroupName = "operator.knative.dev"
+	GroupName = "operator.tekton.dev"
 
 	// SchemaVersion is the current version of the API.
 	SchemaVersion = "v1alpha1"
@@ -33,6 +33,8 @@ const (
 	KindKnativeEventing = "KnativeEventing"
 	// KindTektonPipeline is the Kind of Knative Serving in a GVK context.
 	KindTektonPipeline = "TektonPipeline"
+	// KindKnativeServing is the Kind of Knative Serving in a GVK context.
+	KindKnativeServing = "KnativeServing"
 )
 
 // Resource takes an unqualified resource and returns a Group qualified GroupResource

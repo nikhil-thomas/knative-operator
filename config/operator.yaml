@@ -15,7 +15,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: knative-operator
+  name: tekton-operator
   namespace: default
   labels:
     operator.knative.dev/release: devel
@@ -23,18 +23,18 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: knative-operator
+      name: tekton-operator
   template:
     metadata:
       annotations:
         sidecar.istio.io/inject: "false"
       labels:
-        name: knative-operator
+        name: tekton-operator
     spec:
-      serviceAccountName: knative-operator
+      serviceAccountName: tekton-operator
       containers:
-        - name: knative-operator
-          image: ko://knative.dev/operator/cmd/operator
+        - name: tekton-operator
+          image: ko://knative.dev/operator/cmd/tekton-operator-k8s
           imagePullPolicy: IfNotPresent
           env:
             - name: POD_NAME

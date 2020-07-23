@@ -15,60 +15,30 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: knative-serving-operator
+  name: tekton-operator
   labels:
-    operator.knative.dev/release: devel
+    operator.tekton.dev/release: devel
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: knative-serving-operator
+  name: tekton-operator
 subjects:
 - kind: ServiceAccount
-  name: knative-operator
+  name: tekton-operator
   namespace: default
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: knative-serving-operator-aggregated
+  name: tekton-operator-aggregated
   labels:
-    operator.knative.dev/release: devel
+    operator.tekton.dev/release: devel
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: knative-serving-operator-aggregated
+  name: tekton-operator-aggregated
 subjects:
 - kind: ServiceAccount
-  name: knative-operator
+  name: tekton-operator
   namespace: default
----
-# TODO: Consider restriction of non-aggregated role to knativeeventing namespaces.
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: knative-eventing-operator
-  labels:
-    operator.knative.dev/release: devel
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: knative-eventing-operator
-subjects:
-  - kind: ServiceAccount
-    name: knative-operator
-    namespace: default
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: knative-eventing-operator-aggregated
-  labels:
-    operator.knative.dev/release: devel
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: knative-eventing-operator-aggregated
-subjects:
-  - kind: ServiceAccount
-    name: knative-operator
-    namespace: default
+

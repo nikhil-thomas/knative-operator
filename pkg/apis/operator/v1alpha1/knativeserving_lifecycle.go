@@ -16,102 +16,102 @@ limitations under the License.
 
 package v1alpha1
 
-//import (
-//	"k8s.io/apimachinery/pkg/runtime/schema"
-//	"knative.dev/pkg/apis"
-//)
-//
-//var (
-//	_ KComponentStatus = (*KnativeServingStatus)(nil)
-//
-//	servingCondSet = apis.NewLivingConditionSet(
-//		DependenciesInstalled,
-//		DeploymentsAvailable,
-//		InstallSucceeded,
-//	)
-//)
-//
-//// GroupVersionKind returns SchemeGroupVersion of a KnativeServing
-//func (ks *KnativeServing) GroupVersionKind() schema.GroupVersionKind {
-//	return SchemeGroupVersion.WithKind(KindKnativeServing)
-//}
-//
-//// GetCondition returns the current condition of a given condition type
-//func (is *KnativeServingStatus) GetCondition(t apis.ConditionType) *apis.Condition {
-//	return servingCondSet.Manage(is).GetCondition(t)
-//}
-//
-//// InitializeConditions initializes conditions of an KnativeServingStatus
-//func (is *KnativeServingStatus) InitializeConditions() {
-//	servingCondSet.Manage(is).InitializeConditions()
-//}
-//
-//// IsReady looks at the conditions returns true if they are all true.
-//func (is *KnativeServingStatus) IsReady() bool {
-//	return servingCondSet.Manage(is).IsHappy()
-//}
-//
-//// MarkInstallSucceeded marks the InstallationSucceeded status as true.
-//func (is *KnativeServingStatus) MarkInstallSucceeded() {
-//	servingCondSet.Manage(is).MarkTrue(InstallSucceeded)
-//	if is.GetCondition(DependenciesInstalled).IsUnknown() {
-//		// Assume deps are installed if we're not sure
-//		is.MarkDependenciesInstalled()
-//	}
-//}
-//
-//// MarkInstallFailed marks the InstallationSucceeded status as false with the given
-//// message.
-//func (is *KnativeServingStatus) MarkInstallFailed(msg string) {
-//	servingCondSet.Manage(is).MarkFalse(
-//		InstallSucceeded,
-//		"Error",
-//		"Install failed with message: %s", msg)
-//}
-//
-//// MarkDeploymentsAvailable marks the DeploymentsAvailable status as true.
-//func (is *KnativeServingStatus) MarkDeploymentsAvailable() {
-//	servingCondSet.Manage(is).MarkTrue(DeploymentsAvailable)
-//}
-//
-//// MarkDeploymentsNotReady marks the DeploymentsAvailable status as false and calls out
-//// it's waiting for deployments.
-//func (is *KnativeServingStatus) MarkDeploymentsNotReady() {
-//	servingCondSet.Manage(is).MarkFalse(
-//		DeploymentsAvailable,
-//		"NotReady",
-//		"Waiting on deployments")
-//}
-//
-//// MarkDependenciesInstalled marks the DependenciesInstalled status as true.
-//func (is *KnativeServingStatus) MarkDependenciesInstalled() {
-//	servingCondSet.Manage(is).MarkTrue(DependenciesInstalled)
-//}
-//
-//// MarkDependencyInstalling marks the DependenciesInstalled status as false with the
-//// given message.
-//func (is *KnativeServingStatus) MarkDependencyInstalling(msg string) {
-//	servingCondSet.Manage(is).MarkFalse(
-//		DependenciesInstalled,
-//		"Installing",
-//		"Dependency installing: %s", msg)
-//}
-//
-//// MarkDependencyMissing marks the DependenciesInstalled status as false with the
-//// given message.
-//func (is *KnativeServingStatus) MarkDependencyMissing(msg string) {
-//	servingCondSet.Manage(is).MarkFalse(
-//		DependenciesInstalled,
-//		"Error",
-//		"Dependency missing: %s", msg)
-//}
-//
-//// GetVersion gets the currently installed version of the component.
-//func (is *KnativeServingStatus) GetVersion() string {
-//	return is.Version
-//}
-//
-//// SetVersion sets the currently installed version of the component.
-//func (is *KnativeServingStatus) SetVersion(version string) {
-//	is.Version = version
-//}
+import (
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"knative.dev/pkg/apis"
+)
+
+var (
+	_ KComponentStatus = (*KnativeServingStatus)(nil)
+
+	servingCondSet = apis.NewLivingConditionSet(
+		DependenciesInstalled,
+		DeploymentsAvailable,
+		InstallSucceeded,
+	)
+)
+
+// GroupVersionKind returns SchemeGroupVersion of a KnativeServing
+func (ks *KnativeServing) GroupVersionKind() schema.GroupVersionKind {
+	return SchemeGroupVersion.WithKind(KindKnativeServing)
+}
+
+// GetCondition returns the current condition of a given condition type
+func (is *KnativeServingStatus) GetCondition(t apis.ConditionType) *apis.Condition {
+	return servingCondSet.Manage(is).GetCondition(t)
+}
+
+// InitializeConditions initializes conditions of an KnativeServingStatus
+func (is *KnativeServingStatus) InitializeConditions() {
+	servingCondSet.Manage(is).InitializeConditions()
+}
+
+// IsReady looks at the conditions returns true if they are all true.
+func (is *KnativeServingStatus) IsReady() bool {
+	return servingCondSet.Manage(is).IsHappy()
+}
+
+// MarkInstallSucceeded marks the InstallationSucceeded status as true.
+func (is *KnativeServingStatus) MarkInstallSucceeded() {
+	servingCondSet.Manage(is).MarkTrue(InstallSucceeded)
+	if is.GetCondition(DependenciesInstalled).IsUnknown() {
+		// Assume deps are installed if we're not sure
+		is.MarkDependenciesInstalled()
+	}
+}
+
+// MarkInstallFailed marks the InstallationSucceeded status as false with the given
+// message.
+func (is *KnativeServingStatus) MarkInstallFailed(msg string) {
+	servingCondSet.Manage(is).MarkFalse(
+		InstallSucceeded,
+		"Error",
+		"Install failed with message: %s", msg)
+}
+
+// MarkDeploymentsAvailable marks the DeploymentsAvailable status as true.
+func (is *KnativeServingStatus) MarkDeploymentsAvailable() {
+	servingCondSet.Manage(is).MarkTrue(DeploymentsAvailable)
+}
+
+// MarkDeploymentsNotReady marks the DeploymentsAvailable status as false and calls out
+// it's waiting for deployments.
+func (is *KnativeServingStatus) MarkDeploymentsNotReady() {
+	servingCondSet.Manage(is).MarkFalse(
+		DeploymentsAvailable,
+		"NotReady",
+		"Waiting on deployments")
+}
+
+// MarkDependenciesInstalled marks the DependenciesInstalled status as true.
+func (is *KnativeServingStatus) MarkDependenciesInstalled() {
+	servingCondSet.Manage(is).MarkTrue(DependenciesInstalled)
+}
+
+// MarkDependencyInstalling marks the DependenciesInstalled status as false with the
+// given message.
+func (is *KnativeServingStatus) MarkDependencyInstalling(msg string) {
+	servingCondSet.Manage(is).MarkFalse(
+		DependenciesInstalled,
+		"Installing",
+		"Dependency installing: %s", msg)
+}
+
+// MarkDependencyMissing marks the DependenciesInstalled status as false with the
+// given message.
+func (is *KnativeServingStatus) MarkDependencyMissing(msg string) {
+	servingCondSet.Manage(is).MarkFalse(
+		DependenciesInstalled,
+		"Error",
+		"Dependency missing: %s", msg)
+}
+
+// GetVersion gets the currently installed version of the component.
+func (is *KnativeServingStatus) GetVersion() string {
+	return is.Version
+}
+
+// SetVersion sets the currently installed version of the component.
+func (is *KnativeServingStatus) SetVersion(version string) {
+	is.Version = version
+}

@@ -16,6 +16,6 @@
 
 DIR=${DIR:-$(cd $(dirname "$0")/.. && pwd)}
 
-export KO_DATA_PATH=${KO_DATA_PATH:-$DIR/cmd/manager/kodata}
+export KO_DATA_PATH=${KO_DATA_PATH:-$DIR//cmd/tekton-operator-k8s/kodata}
 
-go run $DIR/cmd/manager $@
+go run $DIR/cmd/tekton-operator-k8s $@

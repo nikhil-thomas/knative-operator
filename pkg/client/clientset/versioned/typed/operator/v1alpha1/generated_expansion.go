@@ -21,3 +21,5 @@ package v1alpha1
 type KnativeEventingExpansion interface{}
 
 type KnativeServingExpansion interface{}
+
+type TektonPipelineExpansion interface{}

@@ -57,6 +57,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Operator().V1alpha1().KnativeEventings().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("knativeservings"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Operator().V1alpha1().KnativeServings().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("tektonpipelines"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Operator().V1alpha1().TektonPipelines().Informer()}, nil
 
 	}
 

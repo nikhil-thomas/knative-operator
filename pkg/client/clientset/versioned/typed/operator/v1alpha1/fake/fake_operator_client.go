@@ -36,6 +36,10 @@ func (c *FakeOperatorV1alpha1) KnativeServings(namespace string) v1alpha1.Knativ
 	return &FakeKnativeServings{c, namespace}
 }
 
+func (c *FakeOperatorV1alpha1) TektonPipelines(namespace string) v1alpha1.TektonPipelineInterface {
+	return &FakeTektonPipelines{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeOperatorV1alpha1) RESTClient() rest.Interface {

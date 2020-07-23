@@ -28,6 +28,7 @@ type OperatorV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	KnativeEventingsGetter
 	KnativeServingsGetter
+	TektonPipelinesGetter
 }
 
 // OperatorV1alpha1Client is used to interact with features provided by the operator.knative.dev group.
@@ -41,6 +42,10 @@ func (c *OperatorV1alpha1Client) KnativeEventings(namespace string) KnativeEvent
 
 func (c *OperatorV1alpha1Client) KnativeServings(namespace string) KnativeServingInterface {
 	return newKnativeServings(c, namespace)
+}
+
+func (c *OperatorV1alpha1Client) TektonPipelines(namespace string) TektonPipelineInterface {
+	return newTektonPipelines(c, namespace)
 }
 
 // NewForConfig creates a new OperatorV1alpha1Client for the given config.

@@ -28,6 +28,8 @@ type Interface interface {
 	KnativeEventings() KnativeEventingInformer
 	// KnativeServings returns a KnativeServingInformer.
 	KnativeServings() KnativeServingInformer
+	// TektonPipelines returns a TektonPipelineInformer.
+	TektonPipelines() TektonPipelineInformer
 }
 
 type version struct {
@@ -49,4 +51,9 @@ func (v *version) KnativeEventings() KnativeEventingInformer {
 // KnativeServings returns a KnativeServingInformer.
 func (v *version) KnativeServings() KnativeServingInformer {
 	return &knativeServingInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// TektonPipelines returns a TektonPipelineInformer.
+func (v *version) TektonPipelines() TektonPipelineInformer {
+	return &tektonPipelineInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
