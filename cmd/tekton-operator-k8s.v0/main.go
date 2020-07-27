@@ -22,8 +22,6 @@ import (
 
 func main() {
 	sharedmain.Main("tektoncd-operator",
-		//knativeserving.NewController,
-		//knativeeventing.NewController,
 		tektonpipeline.NewController,
 	)
 }

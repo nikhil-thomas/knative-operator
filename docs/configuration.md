@@ -1,8 +1,8 @@
 # Configuration
 
 This document describes the `spec` sub-fields of the
-[KnativeServing](../config/300-serving.yaml) and
-[KnativeEventing](../config/300-eventing.yaml) custom resources. A
+[KnativeServing](../config/tekton-operator-k8s.v0/300-serving.yaml) and
+[KnativeEventing](../config/tekton-operator-k8s.v0/300-eventing.yaml) custom resources. A
 Knative installation is configured using these sub-fields.
 
 The `kubectl explain` command shows short descriptions of the custom

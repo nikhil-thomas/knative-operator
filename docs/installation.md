@@ -21,9 +21,9 @@ kubectl apply -f https://storage.googleapis.com/knative-nightly/operator/latest/
 
 Once running, the operator will continuously watch for the following
 custom resources:
-- [KnativeServing](../config/300-serving.yaml) represents the
+- [KnativeServing](../config/tekton-operator-k8s.v0/300-serving.yaml) represents the
   [serving](https://knative.dev/development/serving/) component
-- [KnativeEventing](../config/300-eventing.yaml) represents the
+- [KnativeEventing](../config/tekton-operator-k8s.v0/300-eventing.yaml) represents the
   [eventing](https://knative.dev/development/eventing/) component
 
 Each custom resource includes an optional `spec` field you can set to
