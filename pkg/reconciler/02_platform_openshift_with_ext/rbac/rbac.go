@@ -19,6 +19,7 @@ package rbac
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	corev1 "k8s.io/api/core/v1"
 
@@ -29,6 +30,7 @@ import (
 	"knative.dev/operator/pkg/apis/operator/v1alpha1"
 	clientset "knative.dev/operator/pkg/client/clientset/versioned"
 
+	"k8s.io/apimachinery/pkg/api/errors"
 	"knative.dev/operator/pkg/reconciler/common"
 	nsreconciler "knative.dev/pkg/client/injection/kube/reconciler/core/v1/namespace"
 	"knative.dev/pkg/logging"
@@ -91,43 +93,83 @@ func (r *Reconciler) FinalizeKind(ctx context.Context, original *v1alpha1.Tekton
 // converge the two.
 func (r *Reconciler) ReconcileKind(ctx context.Context, ns *corev1.Namespace) pkgreconciler.Event {
 	logger := logging.FromContext(ctx)
-	logger.Info("##############################################################")
 	logger.Infow("Reconciling Namespace: Platform Openshift", "status", ns.GetName())
-	logger.Info("##############################################################")
 
-	//pipelineStages := common.Stages{
-	//	//append Pipeline Targeg
-	//	//pipeline transforms
-	//	//install
-	//}
-	//addonStages := common.Stages{
-	//	//append addons
-	//	//addons transforms
-	//	//install
-	//}
-	//stages := common.Stages{
-	//	common.AppendTarget,
-	//	//r.transform,
-	//	common.Install,
-	//	//common.CheckDeployments,
-	//}
-	//manifest := r.manifest.Append()
-	//return stages.Execute(ctx, &manifest, tnpl)
+	ignorePattern := "^(openshift|kube)-"
+	if ignore, _ := regexp.MatchString(ignorePattern, ns.GetName()); ignore {
+		logger.Infow("Reconciling Namespace: IGNORE", "status", ns.GetName())
+		return nil
+	}
+	logger.Infow("Reconciling Default SA in ", "Namespace", ns.GetName())
 
-	//ns, err := r.getNS()
-	//if err != nil {
-	//	return reconcile.Result{}, ignoreNotFound(err)
-	//}
-	//
-	//sa, err := r.ensureSA(ns)
-	//if err != nil {
-	//	return reconcile.Result{}, err
-	//}
-	//
+	sa, err := r.ensureSA(ctx, ns)
+	if err != nil {
+		return err
+	}
+
 	//err = r.ensureRoleBindings(sa)
 
 	return nil
 }
+
+func (r *Reconciler) ensureSA(ctx context.Context, ns *corev1.Namespace) (*corev1.ServiceAccount, error) {
+	logger := logging.FromContext(ctx)
+
+	logger.Info("finding sa", "pipeline-sa", "ns", ns.Name)
+	sa := &corev1.ServiceAccount{}
+	sa, err := r.kubeClientSet.CoreV1().ServiceAccounts(ns.Name).Get("pipeline-sa", metav1.GetOptions{})
+	if err == nil {
+		return sa, err
+	} else if !errors.IsNotFound(err) {
+		return nil, err
+	}
+
+	// create sa if not found
+	sa = &corev1.ServiceAccount{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "pipeline-sa",
+			Namespace: ns.Name,
+		},
+	}
+	logger.Info("creating sa", "sa", "pipeline-sa", "ns", ns.Name)
+	sa = &corev1.ServiceAccount{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "pipeline-sa",
+			Namespace: ns.Name,
+		},
+	}
+
+	_, err = r.kubeClientSet.CoreV1().ServiceAccounts(ns.Name).Create(sa)
+	if !errors.IsAlreadyExists(err) {
+		return nil, err
+	}
+	return sa, nil
+}
+
+//func (r *Reconciler) ensureRoleBindings(ctx context.Context, sa *corev1.ServiceAccount) error {
+//	logger := logging.FromContext(ctx)
+//
+//	logger.Info("finding role-binding edit")
+//	rbacClient := r.kc.RbacV1()
+//	editRB, rbErr := rbacClient.RoleBindings(sa.Namespace).Get("edit", metav1.GetOptions{})
+//	if rbErr != nil && !errors.IsNotFound(rbErr) {
+//		log.Error(rbErr, "rbac edit get error")
+//		return rbErr
+//	}
+//
+//	logger.Info("finding cluster role edit")
+//	if _, err := rbacClient.ClusterRoles().Get("edit", metav1.GetOptions{}); err != nil {
+//		log.Error(err, "finding edit cluster role failed")
+//		return err
+//	}
+//
+//	if rbErr != nil && errors.IsNotFound(rbErr) {
+//		return r.createRoleBinding(sa)
+//	}
+//
+//	logger.Info("found rbac", "subjects", editRB.Subjects)
+//	return r.updateRoleBinding(editRB, sa)
+//}
 
 //func (r *Reconciler) getNS(ctx context.Context, comp v1alpha1.KComponent) (*corev1.Namespace, error) {
 //	//log := logging.FromContext(ctx)
