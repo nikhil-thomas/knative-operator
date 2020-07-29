@@ -17,7 +17,10 @@ package main
 
 import (
 	//"knative.dev/operator/pkg/reconciler/02_platform_openshift/tekton-pipeline"
-	"knative.dev/operator/pkg/reconciler/02_platform_openshift_with_ext/tekton-pipeline"
+
+	//"knative.dev/operator/pkg/reconciler/02_platform_openshift/rbac"
+	rbac "knative.dev/operator/pkg/reconciler/02_platform_openshift_with_ext/rbac"
+	tekton_pipeline "knative.dev/operator/pkg/reconciler/02_platform_openshift_with_ext/tekton-pipeline"
 
 	"knative.dev/pkg/injection/sharedmain"
 )
@@ -25,6 +28,6 @@ import (
 func main() {
 	sharedmain.Main("tektoncd-operator",
 		tekton_pipeline.NewController,
-		//rbac.NewController,
+		rbac.NewController,
 	)
 }

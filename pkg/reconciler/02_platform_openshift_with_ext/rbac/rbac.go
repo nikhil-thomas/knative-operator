@@ -20,12 +20,7 @@ import (
 	"context"
 	"fmt"
 
-	//ksc "knative.dev/operator/pkg/reconciler/knativeserving/common"
-
-	//ksc "knative.dev/operator/pkg/reconciler/knativeserving/common"
-
-	//knsreconciler "knative.dev/operator/pkg/client/injection/reconciler/operator/v1alpha1/knativeserving"
-	//ksc "knative.dev/operator/pkg/reconciler/knativeserving/common"
+	corev1 "k8s.io/api/core/v1"
 
 	mf "github.com/manifestival/manifestival"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -34,9 +29,8 @@ import (
 	"knative.dev/operator/pkg/apis/operator/v1alpha1"
 	clientset "knative.dev/operator/pkg/client/clientset/versioned"
 
-	//knsreconciler "knative.dev/operator/pkg/client/injection/reconciler/operator/v1alpha1/knativeserving"
-	tknpreconciler "knative.dev/operator/pkg/client/injection/reconciler/operator/v1alpha1/tektonpipeline"
 	"knative.dev/operator/pkg/reconciler/common"
+	nsreconciler "knative.dev/pkg/client/injection/kube/reconciler/core/v1/namespace"
 	"knative.dev/pkg/logging"
 	pkgreconciler "knative.dev/pkg/reconciler"
 )
@@ -57,8 +51,9 @@ type Reconciler struct {
 }
 
 // Check that our Reconciler implements controller.Reconciler
-var _ tknpreconciler.Interface = (*Reconciler)(nil)
-var _ tknpreconciler.Finalizer = (*Reconciler)(nil)
+var _ nsreconciler.Interface = (*Reconciler)(nil)
+
+//var _ tknpreconciler.Finalizer = (*Reconciler)(nil)
 
 // FinalizeKind removes all resources after deletion of a KnativeServing.
 func (r *Reconciler) FinalizeKind(ctx context.Context, original *v1alpha1.TektonPipeline) pkgreconciler.Event {
@@ -94,9 +89,11 @@ func (r *Reconciler) FinalizeKind(ctx context.Context, original *v1alpha1.Tekton
 
 // ReconcileKind compares the actual state with the desired, and attempts to
 // converge the two.
-func (r *Reconciler) ReconcileKind(ctx context.Context, original *v1alpha1.TektonPipeline) pkgreconciler.Event {
+func (r *Reconciler) ReconcileKind(ctx context.Context, ns *corev1.Namespace) pkgreconciler.Event {
 	logger := logging.FromContext(ctx)
-	logger.Infow("Reconciling Namespace: Platform Openshift", "status", original.GetStatus())
+	logger.Info("##############################################################")
+	logger.Infow("Reconciling Namespace: Platform Openshift", "status", ns.GetName())
+	logger.Info("##############################################################")
 
 	//pipelineStages := common.Stages{
 	//	//append Pipeline Targeg

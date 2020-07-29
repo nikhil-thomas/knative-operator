@@ -20,16 +20,13 @@ import (
 	mfc "github.com/manifestival/client-go-client"
 	mf "github.com/manifestival/manifestival"
 	"go.uber.org/zap"
-	"k8s.io/client-go/tools/cache"
 
 	operatorclient "knative.dev/operator/pkg/client/injection/client"
 
-	//knativeServinginformer "knative.dev/operator/pkg/client/injection/informers/operator/v1alpha1/knativeserving"
-	tektonPipelineinformer "knative.dev/operator/pkg/client/injection/informers/operator/v1alpha1/tektonpipeline"
-	tnplreconciler "knative.dev/operator/pkg/client/injection/reconciler/operator/v1alpha1/tektonpipeline"
 	"knative.dev/operator/pkg/reconciler/common"
 	kubeclient "knative.dev/pkg/client/injection/kube/client"
 	namespaceinformer "knative.dev/pkg/client/injection/kube/informers/core/v1/namespace"
+	nsreconciler "knative.dev/pkg/client/injection/kube/reconciler/core/v1/namespace"
 
 	"knative.dev/pkg/configmap"
 	"knative.dev/pkg/controller"
@@ -46,11 +43,9 @@ func NewController(ctx context.Context, cmw configmap.Watcher) *controller.Impl 
 // NewExtendedController returns a controller extended to a specific platform
 func NewExtendedController(generator common.ExtensionGenerator) injection.ControllerConstructor {
 	return func(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
-		tektonPipelineInformer := tektonPipelineinformer.Get(ctx)
 		namespaceInformer := namespaceinformer.Get(ctx)
 		kubeClient := kubeclient.Get(ctx)
 		logger := logging.FromContext(ctx)
-
 		mfclient, err := mfc.NewClient(injection.GetConfig(ctx))
 		if err != nil {
 			logger.Fatalw("Error creating client from injected config", zap.Error(err))
@@ -64,15 +59,9 @@ func NewExtendedController(generator common.ExtensionGenerator) injection.Contro
 			extension:         generator(ctx),
 			manifest:          manifest,
 		}
-		impl := tnplreconciler.NewImpl(ctx, c)
+		impl := nsreconciler.NewImpl(ctx, c)
 
-		logger.Info("Setting up event handlers")
-
-		tektonPipelineInformer.Informer().AddEventHandler(controller.HandleAll(impl.Enqueue))
-
-		namespaceInformer.Informer().AddEventHandler(cache.FilteringResourceEventHandler{
-			Handler: controller.HandleAll(impl.EnqueueControllerOf),
-		})
+		namespaceInformer.Informer().AddEventHandler(controller.HandleAll(impl.Enqueue))
 
 		return impl
 	}
